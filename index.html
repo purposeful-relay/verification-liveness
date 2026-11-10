@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Liveness Check</title>
+    <!-- Supabase CDN Toolkit -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #f4f7f6; margin-top: 50px; }
+        .container { background: white; max-width: 400px; margin: auto; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        video { width: 100%; border-radius: 8px; background: #000; margin-top: 15px; }
+        button { background: #0070f3; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 5px; cursor: pointer; margin-top: 15px; width: 100%; }
+        button:hover { background: #0051a2; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Identity & Liveness Verification</h2>
+        <p id="status-message">Validating your session...</p>
+
+        <!-- Camera Section (Hidden until session is validated) -->
+        <div id="camera-section" style="display: none;">
+            <video id="webcam-stream" autoplay playsinline></video>
+            <p>Please look directly at the camera.</p>
+            <button onclick="completeVerification()">Complete Verification</button>
+        </div>
+
+        <!-- Success Section -->
+        <div id="success-section" style="display: none;">
+            <h3 style="color: green;">✅ Verification Complete!</h3>
+            <p>Your identity has been successfully verified. You may close this window.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
