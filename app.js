@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const referenceId = urlParams.get('ref');
 
+  // FIX: Assign the extracted URL parameter to currentRef
+  currentRef = referenceId;
+
   const statusMsg = document.getElementById('status-message');
   const cameraSection = document.getElementById('camera-section');
 
