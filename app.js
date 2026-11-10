@@ -8,7 +8,7 @@ let currentRef = '';
 document.addEventListener('DOMContentLoaded', async () => {
   // 2. Read the reference code passed from the URL (e.g. app.example.com/?ref=12345)
   const urlParams = new URLSearchParams(window.location.search);
-  currentRef = urlParams.get('ref');
+  const referenceId = urlParams.get('ref');
 
   const statusMsg = document.getElementById('status-message');
   const cameraSection = document.getElementById('camera-section');
