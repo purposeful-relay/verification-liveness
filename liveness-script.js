@@ -1,16 +1,16 @@
-// 1. Initialize Supabase (Ensure you input your actual project keys)
-const SUPABASE_URL = 'https://wpnqqeqdcdsrzxauyhhl.supabase.co'; 
-const SUPABASE_ANON_KEY = 'sb_publishable_2zvaRMiJ2feMmSiF7wH__Q_STq3W9V7'; 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Safe client initialization that prevents duplicate declaration errors
+if (typeof window.supabaseClient === 'undefined') {
+  const SUPABASE_URL = 'https://wpnqqeqdcdsrzxauyhhl.supabase.co';     // Paste your Supabase URL here
+  const SUPABASE_ANON_KEY = 'sb_publishable_2zvaRMiJ2feMmSiF7wH__Q_STq3W9V7'; // Paste your Supabase Anon Key here
+  window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+var supabase = window.supabaseClient;
 
-let currentRef = '';
+var currentRef = '';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // 2. Read the reference code passed from the URL (e.g. app.example.com/?ref=12345)
   const urlParams = new URLSearchParams(window.location.search);
   const referenceId = urlParams.get('ref');
-
-  // FIX: Assign the extracted URL parameter to currentRef
   currentRef = referenceId;
 
   const statusMsg = document.getElementById('status-message');
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // 3. Check Supabase to confirm this reference exists in your database
+  // Check Supabase to confirm this reference exists in your database
   const { data, error } = await supabase
     .from('verifications')
     .select('*')
@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
-  // 4. Session is valid! Reveal the camera section and start webcam
+  // Session is valid! Reveal camera and start webcam
   statusMsg.innerText = 'Session validated. Please complete the face scan below.';
   cameraSection.style.display = 'block';
   
   startWebcam();
 });
 
-// 5. Turn on the device camera
+// Turn on the device camera
 async function startWebcam() {
   const videoElement = document.getElementById('webcam-stream');
   try {
@@ -53,12 +53,11 @@ async function startWebcam() {
   }
 }
 
-// 6. Finalize when user clicks complete
+// Finalize when user clicks complete
 async function completeVerification() {
   const cameraSection = document.getElementById('camera-section');
   const successSection = document.getElementById('success-section');
 
-  // Update Supabase status column to "Verified"
   const { error } = await supabase
     .from('verifications')
     .update({ status: 'Verified' })
@@ -69,14 +68,12 @@ async function completeVerification() {
     return;
   }
 
-  // Turn off camera hardware light
   const videoElement = document.getElementById('webcam-stream');
   const stream = videoElement.srcObject;
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
   }
 
-  // Hide camera UI and show success card
   cameraSection.style.display = 'none';
   successSection.style.display = 'block';
 }
